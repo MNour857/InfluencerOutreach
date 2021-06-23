@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.3.0/dist/chart.min.js"></script>
+    <link rel="stylesheet" href="/css/common.css">
+    <title>Influencer Outreach</title>
+    <script>
+        function getUser(key){
+            y = localStorage.getItem('user');
+stringi = decodeURIComponent(y);
+                json = JSON.parse(JSON.parse(stringi));
+                _j=  json[0];
+                return _j[key]
+                
+        }
+        fetch("/session/get/user")
+            .then(x => x.text())
+                .then((y) =>{ 
+                localStorage.setItem('user',y) 
+                
+            });
+    </script>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <a class="navbar-brand" href="/">Influencer Outreach</a>
+        <input type="text" placeholder="Search.." id="top-nav-search">
+        <ul class="navbar-nav">
+            <li class="nav-item" id="newUser">
+                <a class="nav-link" href="/addUser">Add User</a>
+            </li>
+            <li class="nav-item" id="signup">
+                <a class="nav-link" href="/signup">Sign Up</a>
+            </li>
+            <li class="nav-item" id="login">
+                <a class="nav-link" href="/login">Login</a>
+            </li>
+        </ul>
+    </nav>
+    <br>
+    <div class="container">
+        <div class="col">
+            <h1 class=""><a href="" class="link-text">{{ un }}</a></h1>
+        </div>
+        <div class="card-columns col-md-12">
+            <div class="card bg-primary col-md-12">
+                <div class="card-body text-center text-light">
+                    <h4 class="card-text">Videos</h4>
+                    <h5 class="card-text" id="post">{{ videos }} </h5>
+                </div>
+            </div>
+            <div class="card bg-warning col-md-12">
+                <div class="card-body text-center text-light">
+                    <h5 class="card-text">Subscribers</h5>
+                        <h5 class="card-text" id="followers">{{ subs }}</h5>
+                </div>
+            </div>
+            <div class="card bg-success col-md-12">
+                <div class="card-body text-center text-light">
+                    <h4 class="card-text">Views</h4>
+                    <h5 class="card-text" id="following">{{ views }} </h5>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <center>
+        <div class="container row">
+            <canvas id="prediction" class=" col-sm-12 col-4 m-2"></canvas>
+        </div>
+        <div class="container row">
+            <canvas id="views" class=" col-sm-12 col-4 m-2"></canvas>
+            <canvas id="subs" class=" col-sm-12 col-4 m-2"></canvas>
+            <canvas id="videos" class="col-sm-12 col-4 m-2"></canvas>
+        </div>
+    </center>
+</body>
+<script>
+function Validate(s) {
+    res = true
+    if (s.trim().length == 0)
+        res = false
+    return res;
+}
+$(document).ready(function() {
+    setInterval(function() {
+        try {
+
+            if (getUser("id") > 0) {
+                $("#signup").hide();
+                $("#login a").attr("href", "/logout");
+                $("#login a").text("Logout");
+            }
+        } catch (e) {
+            $("#signup").show();
+            $("#login a").attr("href", "/login");
+            $("#login a").text("Login");
+            localStorage.removeItem("user");
+
+        }
+    }, 100);
+
+    setInterval(function() {
+        try {
+
+            if (getUser("admin") == 1) {
+                $("#newUser").show();
+            } else {
+                $("#newUser").hide();
+            }
+        } catch (e) {
+            $("#newUser").hide();
+
+        }
+    }, 100);
+
+  
+    var p_ctx = document.getElementById("prediction").getContext("2d");
+    var _plotChart = new Chart(p_ctx, {
+        type: "line",
+        data: {
+            labels: {{ labels_pre | safe }},
+            datasets: [{
+                label: "Subscribers Predicted",
+                data: {{ values_pre | safe }},
+                fill: false,
+                borderColor: "rgb(255,5,192)",
+                lineTension: 0.2
+            },{
+                label: "Subscribers Expected",
+                data: {{ values_pre_exp | safe }},
+                fill: false,
+                borderColor: "rgb(10,255,192)",
+                lineTension: 0.2
+            }]
+        },
+         options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'CHANNEL PREDICTION'
+                }
+            }
+        }
+    });
+
+    var ctx = document.getElementById("views").getContext("2d");
+    var plotChart = new Chart(ctx, {
+        type: "line",
+        data: {
+            labels: {{ labels_views | safe }},
+            datasets: [{
+                label: "VIEWS",
+                data: {{ values_views | safe }},
+                fill: false,
+                borderColor: "rgb(255,5,192)",
+                lineTension: 0.2
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'ANALYSIS ON VIEWS'
+                }
+            }
+        }
+    });
+
+
+     var ctx1 = document.getElementById("subs").getContext("2d");
+    var plotChart1 = new Chart(ctx1, {
+        type: "line",
+        data: {
+            labels: {{ labels_subs | safe }},
+            datasets: [{
+                label: "SUBSCRIBERS",
+                data: {{ values_subs | safe }},
+                fill: false,
+                borderColor: "rgb(5,90,255)",
+                lineTension: 0.2
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'ANALYSIS ON SUBSCRIBERS'
+                }
+            }
+        }
+    });
+    var ctx2 = document.getElementById("videos").getContext("2d");
+    var plotChart2 = new Chart(ctx2, {
+        type: "line",
+        data: {
+            labels: {{ labels_videos | safe }},
+            datasets: [{
+                label: "VIDEOS",
+                data: {{ values_videos | safe }},
+                fill: false,
+                borderColor: "rgb(50,255,192)",
+                lineTension: 0.2
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'ANALYSIS ON VIDEOS'
+                }
+            }
+        }
+
+    });
+
+$("#top-nav-search").on('change',function(){
+    query = $(this).val();
+    if(query.trim().length == 0){
+        alert("Type something to search!")
+    }
+    else{
+        if(query.includes("signup") || query.includes("register")){
+            window.location.href="/signup"
+        }
+        else if(query.includes("login") || query.includes("user")){
+            window.location.href="/login"
+        }
+        else{
+            alert("ERROR 404")
+        }
+    }
+
+
+});
+    });
+
+
+</script>
+
+</html>

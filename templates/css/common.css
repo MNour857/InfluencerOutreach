@@ -1,0 +1,48 @@
+*{
+  user-select: none;
+  outline: none;
+  transition: all 0.25s ease-in-out;
+}
+
+.navbar-brand{
+  margin-left:4% !important;
+}
+#top-nav-search{
+  background-color: #fff;
+    border: 1px solid #c0d3dc;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px 0 rgba(0,0,0,.12);
+    max-width: 50%;
+    width:50%;
+    height: 50px;
+    margin-left: 7%;
+    margin-right:10%;
+    padding-left: 20px;
+    padding-right:20px;
+}
+a.link-text{
+  text-decoration: none;
+  text-decoration-style: none;
+}
+#stats::-webkit-scrollbar{
+ visibility: hidden;
+}
+/*SCROL BAR*/
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

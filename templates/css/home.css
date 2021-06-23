@@ -1,0 +1,132 @@
+
+.search-container {
+    text-align: center;
+    padding: 100px 15px;
+  }
+  
+  .search-form {
+    position: relative;
+    max-width: 550px;
+    margin: 10px auto;
+  }
+  .search-form .choices {
+    position: absolute;
+    width: 145px;
+  }
+
+  
+  .search-form .choices__list--dropdown .choices__item::after {
+    display: none;
+  }
+  .search-form .choices__list--dropdown .choices__item::before {
+    top: 5px;
+    left: 12px;
+  }
+  #search_input:focus{
+    border:1.5px solid red;
+  }
+  .search-form input.search-input {
+    background-color: #fff;
+    border: 1px solid #c0d3dc;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px 0 rgba(0,0,0,.12);
+    width: 100%;
+    height: 50px;
+    padding: 8px 50px 8px 155px;
+  }
+  .search-button  {
+    background-color: #75a11b;
+    border-radius: 9px;
+    box-shadow: 0 1px 6px 0 rgba(0,0,0,.08);
+    width: 42px;
+    height: 42px;
+    position: absolute;
+    right: 4px;
+    top: 4px;
+    color: #fff;
+    border: none;
+    padding: 5px;
+  }
+  .search-button:hover {
+    opacity: 0.8;
+  }
+  .search-button > span {
+    color: #fff;
+    font-size: 33px;
+  }
+  @media (max-width: 767px) {
+    .search-container {
+      padding: 50px 10px;
+    }
+    .search-label {
+      font-size: 30px;
+      margin: 26px auto;
+    }
+    .search-social-instagram,{
+      font-size: 30px;
+    }
+    #top-nav-search{
+      margin-left:2.5%;
+      margin-right:2.5%;
+    }
+    .search-form input.search-input {
+      padding-left: 73px;
+      font-size: 11px;
+    }
+    .search-form .choices {
+      width: 70px;
+    }
+    .search-form .choices__inner .choices__item {
+      padding-left: 60px;
+    }
+    .search-form .choices__list--dropdown {
+      width: 150px;
+    }
+  }
+
+
+/*Toggle Button*/
+.switch-field {
+  display: flex;
+  margin-bottom: 36px;
+  overflow: hidden;
+}
+
+.switch-field input {
+  position: absolute !important;
+  clip: rect(0, 0, 0, 0);
+  height: 1px;
+  width: 1px;
+  border: 0;
+  overflow: hidden;
+}
+
+.switch-field label {
+  background-color: #FFF ;
+  color: #000 ;
+  font-size: 32px;
+  line-height: 1;
+  text-align: center;
+  padding: 8px 16px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1);
+  transition: all 0.1s ease-in-out;
+}
+
+.switch-field label:hover {
+  cursor: pointer;
+}
+
+.switch-field input:checked + label {
+  color: #FF1111;
+  box-shadow: none;
+}
+
+.switch-field label:first-of-type {
+  border-radius: 4px 0 0 4px;
+}
+
+.switch-field label:last-of-type {
+  border-radius: 0 4px 4px 0;
+}
+
+
